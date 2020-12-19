@@ -1,0 +1,15 @@
+
+
+{% block title %}
+    {{TITLE}}
+{% endblock %}
+
+{% block body %}
+    <br>
+    <h2>{{ page | safe }}</h2>
+
+{% endblock %}
+
+{% block edit %}
+<a href="{% url 'wiki:edit_page'%}">Edit Page</a>
+{% endblock %}

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <form action="{% url 'wiki:create' %}" method="POST">
+    {% csrf_token %}
+      <label for="title">Wiki's title:</label>
+      <input type="text" id="title" name="title"><br><br>
+      <label for="info">About wiki:</label><br>
+      <textarea id="info" name="info" cols="60" rows="4"></textarea>
+        <br><br>
+        <input type="submit" value="Save">
+  </form> 
+</html>
