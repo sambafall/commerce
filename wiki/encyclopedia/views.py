@@ -19,11 +19,11 @@ def index(request):
 def entry_page(request, TITLE):
     request.session['TITLE'] = TITLE
     page = util.get_entry(TITLE)
-    markdowner = Markdown()
-    page = markdowner.convert(page)
     if page is None:
-        return HttpResponseNotFound('<h1>Page not found</h1>')
+        return HttpResponseNotFound(f'<h1>Wiki for {TITLE} not found</h1>')
     else:
+        markdowner = Markdown()
+        page = markdowner.convert(page)
         return render(request, 'encyclopedia/entry_page.html', {
             'page': page
         })
