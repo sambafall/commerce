@@ -1,0 +1,32 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %}
+
+{% block form %}
+    <form action="{% url 'wiki:search' %}" method="GET">
+        {% csrf_token %}
+        <input class="search" type="text" name="q" placeholder="Search ...">
+    </form>
+{% endblock %}
+
+{% block newPage %}
+    <a href="{% url 'wiki:new' %}">Create New Page</a>
+{% endblock %}
+
+{% block randomPage %}
+<a href="{% url 'wiki:random_page' %}">Random Page</a>
+{% endblock %}
+
+
+{% block body %}
+    <h1>All Pages</h1>
+
+    <ul>
+        {% for entry in entries %}
+            <li><a href="{% url 'wiki:entry_page' TITLE=entry %}"> {{ entry }}</a></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

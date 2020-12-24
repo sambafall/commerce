@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <form action="{% url 'wiki:edit_page' %}" method="POST">
+    {% csrf_token %}
+      <label for="info">Edit wiki:</label><br>
+      <textarea id="info" name="info" cols="60" rows="4">{{page}}</textarea>
+        <br><br>
+        <input type="submit" value="Save">
+  </form> 
+</html>
