@@ -1,0 +1,91 @@
+{% extends "auctions/layout.html" %}
+{% load auctions_extra %}
+
+{% block body %}
+    <h3 class="text-center">Listings</h3><hr> <br>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Trending <b>Auctions</b></h2>
+          <div id="myCarousel" class="carousel slide" data-ride="carousel" >
+            <!-- Carousel indicators -->
+            <ol class="carousel-indicators">
+              <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+              <li data-target="#myCarousel" data-slide-to="1"></li>
+              <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+            <!-- Wrapper for carousel items -->
+            
+            <div class="carousel-inner" >
+              {% for trending in trendings|chunks:"4"%}       
+              <div {% if forloop.first %} class="carousel-item active" {% else %} class="carousel-item" {% endif %}>
+                  <div class="row">
+                    {% for i in trending%}
+                    <div class="col-sm-3">
+                      <div class="thumb-wrapper">
+                        <div class="img-box">
+                          <a href="{% url 'auctions:listing_page' listing_id=i.id%}">
+                            <img class="card-img-top zoom" src="{{i.product_image_url}}" alt="">
+                            </a>
+                        </div>
+                        <div class="thumb-content">
+                          <a href="{% url 'auctions:listing_page' listing_id=i.id%}">
+                          <h4>{{i.product_name}}</h4>
+                         </a>
+                          <p class="item-price"><span>€{{i.minimal_bid}}</span></p>
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                  
+                </div>
+                {% endfor %}
+              </div>
+              <!-- Carousel controls -->
+              <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                <i class="fa fa-angle-left"></i>
+              </a>
+              <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                <i class="fa fa-angle-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <section class="products">
+    {% for listing in listings %}
+        <div class="card mr-3 mb-3" style="width: 18rem;">
+          <a href="{% url 'auctions:listing_page' listing_id=listing.id%}">
+          <img class="card-img-top zoom centered" src="{{listing.product_image_url}}" alt="">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">
+              <a href="{% url 'auctions:listing_page' listing_id=listing.id%}">{{listing.product_name}}
+              </a> 
+            </h5>
+            <p>Starting bid: {{listing.minimal_bid}} €</p>
+            <p class="card-text">{{listing.description|truncatechars:60}}.</p>
+            <p>Created at: {{listing.pubdate}}</p>
+            <a href="{% url 'auctions:listing_page' listing_id=listing.id%}" class="btn btn-outline-secondary" style="position: absolute; bottom: 0; right: 0;">
+              Show details
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+      </section>
+      <footer class="bg-light text-center text-lg-start">
+        <!-- Grid container -->
+        <div class="container p-4 pb-0">
+        </div>
+        <!-- Grid container -->
+      
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+          ©
+        </div>
+        <!-- Copyright -->
+      </footer>
+{% endblock %}

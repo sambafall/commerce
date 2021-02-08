@@ -1,0 +1,25 @@
+{% extends "auctions/layout.html" %}
+{% load auctions_extra %}
+
+{% block body %}
+<h3 class="text-center">Categories</h3>
+<hr> <br>
+<div class="categories">
+  <section class="products-cat">
+    {% for category in categories %}
+    <div class="card mr-3 mb-3" style="width: 18rem;">
+      <a href="{% url 'auctions:get_category_listings' category.product_cat %}">
+      <img class="card-img-top" src="{{category.category_image_url}}" alt="Image not available">
+    </a>
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="{% url 'auctions:get_category_listings' category.product_cat %}">{{category.product_cat}}
+          </a>
+        </h5>
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+</div>
+
+  {% endblock %}
