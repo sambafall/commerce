@@ -1,0 +1,126 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+<div class="container ">
+    <div class="row" style="box-shadow: 0 -1px 6px 1px rgba(0,0,0,0.1);">
+        <div class="col-6">
+        <div class="image">
+            <div class="overlay">
+                <form action="{% url 'auctions:addtowatchlist' listing_id=page.id%}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="Add"  class="btn btn-light pull-right" data-toggle="tooltip" data-placement="right" title="{{button_name}}">  
+                        <span style="color:{{icon_color}};">
+                            <i class="fa fa-heart" aria-hidden="true"></i> 
+                        </span>
+                    </button>
+                </form> 
+            </div>
+            <img src="{{page.product_image_url}}" class="card-img-top2 rounded">
+          </div>
+        </div>
+        <div class="col-6" style="position: relative;" >
+          
+            <div >
+                <h4>{{page.product_name}}</h4> 
+                <br>
+                <p><strong>Description: </strong>{{page.description}}</p>
+                <p><strong>Initial Price: </strong><span>{{page.minimal_bid}} €</span></p>
+                {% if display_winner%}
+                <p><strong>Congratulations {{winner}}! </strong> You won the Bid</p> 
+                {% else %}
+                <p><strong>Current Highest Bid: </strong>{{max_bid}}€</p> 
+                {% endif %} 
+            </div>
+            <br>
+            <div style="bottom: 0;">
+                <h5>Details</h5>
+                <ul >
+                    <li><strong>Listed By</strong>: {{page.author|title}}</li>
+                    <li><strong>Publication Date</strong> : {{page.pubdate}}</li>
+                    <li><strong>Category</strong>: {{page.get_product_cat_display|title}}</li>
+                    <li><strong>Status</strong>: {{page.get_listing_status_display|title}}</li>
+                </ul>  
+            </div>
+                <div class="form-group">
+                    <form action="{% url 'auctions:listing_page' listing_id=page.id%}" method="post">
+                        {% csrf_token %}
+                        {{ bidform}}
+                        <div class="border border-light p-3 mb-4 text-center">
+                            <button type="submit" name="bid" class="btn btn-primary {{button_class}}" {{button_status}}>Submit your Bid</button>
+                        </div>
+                    </form>
+                </div>
+        </div>
+            <br>
+            {% if show_button %}
+            <div  style="position: absolute; right: 0;" >
+                <form action="{% url 'auctions:close_listing' listing_id=page.id%}" method="post">
+                    {% csrf_token %}
+                <button type="submit" name="Close"  class="btn btn-outline {{button_class}}" {{button_status}} >
+                    <span>
+                        <i class="fa fa-lock" aria-hidden="true"></i> 
+                    </span>
+                    {{close_button_text}}
+                </button>
+                </form>
+            </div>
+            {% endif %}
+            <div>
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <script>alert("{{ message }}")</script> 
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>                             
+        
+</div>
+
+<section class="content-item" id="comments">
+    <div class="container">  
+        <div class="row">
+            <div class="col-sm-8">
+                <button type="button" id="comment" class="btn btn-outline-link active" onclick="$().button('toggle')">Add a new comment  
+                    <span style="color: rgb(12, 11, 11); size: 20px; font-weight: bold;">
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+                
+                <div class="commentform">
+                <form action="{% url 'auctions:listing_page' listing_id=page.id%}" method="post">
+                    {% csrf_token %}
+                    {{commentform}}
+                    <div class="border border-light p-3 mb-4 text-center">
+                        <button type="submit" name="comment" class="btn btn-normal pull-right" >Submit Comment</button>
+                    </div>
+                </form>
+                </div>
+
+                {% if n_comments > 0%}
+                <h3 style="margin-top: 20px;">{{n_comments}} Comments</h3>
+                {% else %}
+                <h3 style="margin-top: 20px;">No Comment has been made yet</h3>
+                {% endif %}
+
+                {% for comment in comments %}
+                <div class="col-md-10-mb-3">
+                    <div class="clearfix">
+                        <p>
+                        <a class="float-left" href=""><strong>{{comment.made_by|title}}</strong></a><br>
+                        </p>
+                        <p>{{comment.Content}}.</p>
+                        <ul class="list-unstyled list-inline media-detail pull-right">
+                            <li><i class="fa fa-calendar"></i>{{comment.Comment_Date}}</li>
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    
+</section>
+</div>
+{% endblock %}
